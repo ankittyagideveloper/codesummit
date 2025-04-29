@@ -3,6 +3,8 @@ import { z } from "zod"
 const envSchema = z.object({
     PORT: z.string().optional(),
     BASEURL: z.string().min(1, { message: "Base is required" }),
+    NODE_ENV: z.string().min(1, { message: "NODE_ENV is required" }).optional(),
+    JWT_SECRET: z.string().min(1, { message: "JWT_SECRET is required" }),
     // DB_TYPE: z.string().min(1, { message: "DB_TYPE is required" }),
     // MONGO_URI: z.string().min(1, { message: "MONGO_URI is required" })
 })
