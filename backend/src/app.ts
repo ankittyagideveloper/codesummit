@@ -13,7 +13,9 @@ app.get("/", (req, res) => {
 
 // import all the routes here
 import { router as authRoutes } from "@/routes/auth";
+import { router as problemRoutes } from "@/routes/problem";
 
 app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/problems", problemRoutes)
 
 export default app

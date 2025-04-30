@@ -1,3 +1,4 @@
+import { UserRole } from "@/generated/prisma";
 import { db } from "@/libs/db";
 import { ApiError } from "@/utils/apiError";
 import { asyncHandler } from "@/utils/asyncHandler";
@@ -26,6 +27,13 @@ export const isAuth = asyncHandler(async (req: Request, res: Response, next: Nex
     if (!user) throw new ApiError(404, "User not found")
 
     req.user = user
+
+    next()
+
+})
+
+export const isAdmin = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    if (req.user?.role !== UserRole.ADMIN) throw new ApiError(403, "UnAuthorized request")
 
     next()
 

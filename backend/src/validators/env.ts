@@ -5,6 +5,7 @@ const envSchema = z.object({
     BASEURL: z.string().min(1, { message: "Base is required" }),
     NODE_ENV: z.string().min(1, { message: "NODE_ENV is required" }).optional(),
     JWT_SECRET: z.string().min(1, { message: "JWT_SECRET is required" }),
+    JUDGE0_API_URL: z.string().min(1, { message: "JUDGE0_API_URL is required" }),
     // DB_TYPE: z.string().min(1, { message: "DB_TYPE is required" }),
     // MONGO_URI: z.string().min(1, { message: "MONGO_URI is required" })
 })

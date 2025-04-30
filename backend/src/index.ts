@@ -1,7 +1,5 @@
 import 'dotenv/config'
 import { env } from '@/validators/env';
-import connectDB from "@/db"
-import express from "express";
 import app from './app';
 
 const PORT = env.PORT ?? 8000
