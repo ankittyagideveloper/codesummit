@@ -1,9 +1,14 @@
 import { env } from "@/validators/env"
 import axios from "axios"
 
+export interface TestcasesTypes {
+    input: string,
+    output: string
+}
+
 export interface Submissions {
     source_code: string,
-    language_id: string,
+    language_id: number,
     stdin: string,
     expected_output: string
 }
@@ -13,11 +18,17 @@ export interface submissionsResponse {
 }
 
 export interface submissionBatchResult {
-    language_id: number,
     stdout: string,
-    status_id: number,
+    time: string,
+    memory: string,
     stderr: string | null,
     token: string
+    compile_output: string | null
+    message: string | null,
+    status: {
+        id: number,
+        description: string | null
+    }
 }
 
 export const getJudge0LanguageId = (language: string) => {
@@ -32,8 +43,21 @@ export const getJudge0LanguageId = (language: string) => {
 
 }
 
-export const submitBatch = async (submissions: Submissions) => {
-    const { data }: { data: submissionsResponse[] } = await axios.post(`${env.JUDGE0_API_URL}/submissions/batch?base64_encoded=false`, { submissions })
+export const submitBatch = async (submissions: Submissions[]) => {
+
+    const options = {
+        method: 'POST',
+        url: `${env.JUDGE0_API_URL}/submissions/batch`,
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${env.JUDGE0_AUTH}`
+        },
+        data: {
+            submissions
+        }
+    };
+    const { data }: { data: submissionsResponse[] } = await axios.request(options);
 
     return data
 }
@@ -44,18 +68,34 @@ const sleep = (ms: number) => {
 
 export const poolBatchResults = async (tokens: string[]) => {
 
+    console.log("reached here at")
+
+    const alltokens = tokens.join(",")
+
     while (true) {
-        const { data } = await axios.get(`${env.JUDGE0_API_URL}/submissions/batch`, {
-            params: {
-                tokens: tokens.join(",")
+
+        const options = {
+            method: 'GET',
+            url: `${env.JUDGE0_API_URL}/submissions/batch`,
+            params: { tokens: alltokens },
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${env.JUDGE0_AUTH}`
             }
-        })
+        };
+
+        const { data } = await axios.request(options);
 
         const results: submissionBatchResult[] = data.submissions
 
-        const isAllDone = results.every((r) => r.status_id !== 1 && r.status_id !== 2)
+        if (results.every(r => r !== null)) {
 
-        if (isAllDone) return results
+            const isAllDone = results.every(
+                r => r.status.id !== 1 && r.status.id !== 2
+            );
+
+            if (isAllDone) return results;
+        }
 
         await sleep(1000)
     }
