@@ -7,11 +7,11 @@ import { Request, Response } from "express";
 export const executeCode = asyncHandler(async (req: Request, res: Response) => {
     const { source_code, language_id, stdin, expected_outputs, problemId } = req.body
 
-    if (!Array.isArray(stdin) || stdin.length === 0 || !Array.isArray(expected_outputs) || expected_outputs.length !== stdin.length) {
+    if (stdin.length === 0 || expected_outputs.length !== stdin.length) {
         throw new ApiError(400, "Invalid or missing test cases")
     }
 
-    const submissions = stdin.map((input) => ({
+    const submissions = stdin.map((input: string) => ({
         source_code,
         language_id: Number(language_id),
         stdin: input,
