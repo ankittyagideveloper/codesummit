@@ -1,11 +1,15 @@
 import express, { Express } from "express";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import * as swaggerDocument from "./swagger-output.json"
 
 const app: Express = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/", (req, res) => {
     res.status(200).json("It is up and running...")
