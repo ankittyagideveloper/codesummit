@@ -35,3 +35,19 @@ export const executeCodeSchema = yup.object({
     expected_outputs: yup.array().required("expected_outputs is required"),
     problemId: yup.string().required("Problem Id is required")
 })
+
+export const createPlaylistSchema = yup.object({
+    name: yup.string().required("name is required"),
+    description: yup.string().required("description is required"),
+})
+
+export const updatePlaylistSchema = yup.object({
+    name: yup.string().required("name is required"),
+    description: yup.string().required("description is required"),
+}).test(
+    'at-least-one',
+    'Either name or description must be provided',
+    (value) => {
+        return !!(value?.name || value?.description);
+    }
+);

@@ -15,9 +15,13 @@ app.get("/", (req, res) => {
 import { router as authRoutes } from "@/routes/auth";
 import { router as problemRoutes } from "@/routes/problem";
 import { router as executionRoutes } from "@/routes/execution";
+import { router as submissionRoutes } from "@/routes/submission";
+import { router as playlistRoutes } from "@/routes/playlist";
 
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/problems", problemRoutes)
 app.use("/api/v1/execute-code", executionRoutes)
+app.use("/api/v1/submission", submissionRoutes)
+app.use("/api/v1/playlist", playlistRoutes)
 
 export default app
