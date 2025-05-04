@@ -101,3 +101,17 @@ export const poolBatchResults = async (tokens: string[]) => {
     }
 
 }
+
+export const getLanguageName = (language_id: number) => {
+
+    const LanguageName = {
+        74: "TypeScript",
+        63: "JavaScript",
+        71: "Python",
+        62: "Java"
+    }
+
+    type LanguageId = keyof typeof LanguageName;
+    
+    return LanguageName[language_id as LanguageId] || "Unknown"
+}
