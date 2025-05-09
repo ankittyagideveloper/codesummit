@@ -33,6 +33,7 @@ export const isAuth = asyncHandler(async (req: Request, res: Response, next: Nex
 })
 
 export const isAdmin = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+
     if (req.user?.role !== UserRole.ADMIN) throw new ApiError(403, "UnAuthorized request")
 
     next()

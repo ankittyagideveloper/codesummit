@@ -64,6 +64,7 @@ export const getAllProblem = asyncHandler(async (req: Request, res: Response) =>
 
 export const getAproblem = asyncHandler(async (req: Request, res: Response) => {
     const { problemId } = req.params
+
     const problem = await db.problem.findUnique({
         where: {
             id: problemId
@@ -141,7 +142,7 @@ export const getSolvedProblem = asyncHandler(async (req: Request, res: Response)
         where: {
             userId
         }, include: {
-            problem: true
+            problem: true,
         }
     })
 
